@@ -1,9 +1,14 @@
 package com.wildcodeschool.wildandwizard.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import java.sql.Date;
 
 @Entity
@@ -18,9 +23,30 @@ public class Wizard {
     private String birthPlace;
     private String biography;
     private boolean muggle;
+    
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, optional = false)
+    @JoinColumn(name = "school_id", nullable = false)
+    private School school;
 
-    public Wizard() {
+
+	public Wizard() {
     }
+	
+//	getter-method isn't necessary in this example, since only the direction school -> wizards is fetched
+//  /**
+//	 * @return the school
+//	 */
+//	public School getSchool() {
+//		return school;
+//	}
+
+	/**
+	 * setter-method is necessary to resolve the many-to-one-relationship wizard-school
+	 * @param school the school to set
+	 */
+	public void setSchool(School school) {
+		this.school = school;
+	}
 
     public Long getId() {
         return id;
